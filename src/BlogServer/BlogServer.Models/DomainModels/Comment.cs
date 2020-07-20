@@ -8,6 +8,11 @@ namespace BlogServer.Models.DomainModels
     {
         private const int StringMinLength = 5;
 
+        public Comment()
+        {
+            this.CreatetOn = DateTime.Today;
+        }
+
         [Key]
         public int Id { get; set; }
 
