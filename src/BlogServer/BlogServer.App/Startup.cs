@@ -10,6 +10,8 @@ namespace BlogServer.App
 {
     public class Startup
     {
+        private const string CorsPolicy = "CorsPolicy";
+
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -21,6 +23,15 @@ namespace BlogServer.App
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<BlogContext>(o => o.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+            services.AddCors(o =>
+            {
+                o.AddPolicy(CorsPolicy, p =>
+                {
+                    p.AllowAnyHeader()
+                     .AllowAnyMethod()
+                     .WithOrigins("http://localhost:3000");
+                });
+            });
             services.AddControllers();
         }
 
@@ -37,6 +48,8 @@ namespace BlogServer.App
             app.UseRouting();
 
             app.UseAuthorization();
+
+            app.UseCors(CorsPolicy);
 
             app.UseEndpoints(endpoints =>
             {
