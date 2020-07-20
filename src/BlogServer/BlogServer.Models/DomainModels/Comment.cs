@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace BlogServer.Models.DomainModels
@@ -13,6 +14,8 @@ namespace BlogServer.Models.DomainModels
         [Required]
         [MinLength(StringMinLength)]
         public string Content { get; set; }
+
+        public DateTime CreatetOn { get; set; }
 
         // TODO Add Author navigation property and foreign key
 
