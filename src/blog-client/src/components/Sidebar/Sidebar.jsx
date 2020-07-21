@@ -1,19 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import style from './Sidebar.module.css';
 import NavLink from '../NavLink/NavLink';
+import { fetchCategories } from '../../services/posts-service';
 
 function Sidebar() {
     const [categories, setCategories] = useState([]);
 
     useEffect(() => {
-        fetchAndSetCategories();
+        getCategories();
     }, []);
 
-    async function fetchAndSetCategories() {
-        let promise = await fetch('https://localhost:44393/api/posts/categories');
-        let res = await promise.json();
+    async function getCategories() {
+        let categories = await fetchCategories();
 
-        setCategories(res);
+        setCategories(categories);
     }
 
     return (
