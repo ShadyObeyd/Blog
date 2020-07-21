@@ -5,11 +5,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Controllers\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\BlogServer.Data\BlogServer.Data.csproj" />
+    <ProjectReference Include="..\BlogServer.Services\BlogServer.Services.csproj" />
   </ItemGroup>
 
 

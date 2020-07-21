@@ -1,4 +1,5 @@
 using BlogServer.Data;
+using BlogServer.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -33,6 +34,10 @@ namespace BlogServer.App
                 });
             });
             services.AddControllers();
+
+            // Application services
+
+            services.AddScoped<PostsService>();
         }
 
 
