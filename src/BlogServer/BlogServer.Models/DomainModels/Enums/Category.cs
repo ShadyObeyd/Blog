@@ -17,6 +17,7 @@
         Dating = 12,
         Tourism = 13,
         History = 14,
-        Recipes = 15
+        Recipes = 15,
+        Other = 16
     }
 }

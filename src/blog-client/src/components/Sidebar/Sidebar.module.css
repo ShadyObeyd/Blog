@@ -1,7 +1,6 @@
 .sidenav {
     height: 100%;
     position: fixed;
-    z-index: 1;
     top: 65px;
     left: 0;
     overflow-x: hidden;
@@ -9,7 +8,8 @@
 }
 
 .sidenav a {
-    padding: 6px 8px 6px 40px;
+    padding-left: 40px;
+    padding-top: 10px;
     text-decoration: none;
     font-size: 20px;
     color: white;
@@ -17,7 +17,8 @@
 }
 
 .sidenav h3 {
-    padding: 6px 10px 6px 40px;
+    padding-right: 10px;
+    padding-left: 40px;
 }
 
 .sidenav a:hover {
