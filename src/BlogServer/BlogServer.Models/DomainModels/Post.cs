@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BlogServer.Models.DomainModels.Enums;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
@@ -26,6 +27,8 @@ namespace BlogServer.Models.DomainModels
         public string Content { get; set; }
 
         public DateTime CreatedOn { get; set; }
+
+        public Category Category { get; set; }
 
         // TODO Add Author navigation property and foreign key
 
