@@ -1,16 +1,17 @@
-.login {
+.register {
     display: block;
     text-align: center;
-    font-size: 25px;
 }
 
-.login label {
-    margin-right: 15px;
+.register label {
+    font-size: 20px;
 }
 
-.login input {
-    margin-right: 15px;
-    height: 25px;
+.register input {
+    width: 50%;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    height: 30px;
     font-size: 17px;
     background-color: transparent;
     border-radius: 10px;
@@ -20,11 +21,6 @@
     padding-left: 8px;
 }
 
-.login ::placeholder {
+.register ::placeholder{
     color: white;
-}
-
-.login a {
-    text-decoration: none;
-    color: wheat;
 }
