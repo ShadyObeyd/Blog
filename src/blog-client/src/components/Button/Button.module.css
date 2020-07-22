@@ -8,3 +8,7 @@
     border-color: white;
     border-radius: 10px;
 }
+
+.button:hover {
+    color: bisque;
+}

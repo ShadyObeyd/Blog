@@ -3,24 +3,10 @@
     position: fixed;
     top: 65px;
     left: 0;
-    overflow-x: hidden;
     padding-top: 20px;
-}
-
-.sidenav a {
-    padding-left: 40px;
-    padding-top: 10px;
-    text-decoration: none;
-    font-size: 20px;
-    color: white;
-    display: block;
 }
 
 .sidenav h3 {
     padding-right: 10px;
     padding-left: 40px;
-}
-
-.sidenav a:hover {
-    color: beige;
 }
