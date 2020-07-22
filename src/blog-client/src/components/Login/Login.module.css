@@ -1,0 +1,38 @@
+.login {
+    display: block;
+    text-align: center;
+    font-size: 25px;
+}
+
+.login label {
+    margin-right: 15px;
+}
+
+.login input {
+    margin-right: 15px;
+    height: 25px;
+    font-size: 17px;
+    background-color: transparent;
+    border-radius: 10px;
+    color: white;
+    border-color: white;
+    outline: none;
+    padding-left: 8px;
+}
+
+.login button {
+    margin-left: auto;
+    margin-right: auto;
+    font-size: 26px;
+    padding: 10px;
+    margin-top: 20px;
+    color: white;
+    background-color: transparent;
+    outline: none;
+    border-color: white;
+    border-radius: 10px;
+}
+
+.login ::placeholder {
+    color: white;
+}
