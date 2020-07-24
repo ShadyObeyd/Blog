@@ -1,7 +1,12 @@
-﻿namespace BlogServer.Models.DomainModels
+﻿using Microsoft.AspNetCore.Identity;
+using System.Collections.Generic;
+
+namespace BlogServer.Models.DomainModels
 {
-    public class BlogUser
+    public class BlogUser: IdentityUser
     {
-        // TODO Finish entity definition
+        public IEnumerable<Post> Posts { get; set; }
+
+        public IEnumerable<Comment> Comments { get; set; }
     }
 }

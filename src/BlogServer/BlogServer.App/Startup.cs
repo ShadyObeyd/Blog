@@ -1,7 +1,9 @@
 using BlogServer.Data;
+using BlogServer.Models.DomainModels;
 using BlogServer.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -24,6 +26,7 @@ namespace BlogServer.App
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<BlogContext>(o => o.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+
             services.AddCors(o =>
             {
                 o.AddPolicy(CorsPolicy, p =>
@@ -33,11 +36,20 @@ namespace BlogServer.App
                      .WithOrigins("http://localhost:3000");
                 });
             });
+
             services.AddControllers();
+
+            var builder = services.AddIdentityCore<BlogUser>();
+            var identityBuilder = new IdentityBuilder(builder.UserType, builder.Services);
+            identityBuilder.AddEntityFrameworkStores<BlogContext>();
+            identityBuilder.AddSignInManager<SignInManager<BlogUser>>();
+
+            services.AddAuthentication();
 
             // Application services
 
             services.AddScoped<PostsService>();
+            services.AddScoped<UsersService>();
         }
 
 
@@ -52,6 +64,7 @@ namespace BlogServer.App
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseCors(CorsPolicy);

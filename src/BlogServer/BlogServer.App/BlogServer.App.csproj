@@ -5,7 +5,15 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="3.1.6">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\BlogServer.Data\BlogServer.Data.csproj" />
+    <ProjectReference Include="..\BlogServer.Models\BlogServer.Models.csproj" />
     <ProjectReference Include="..\BlogServer.Services\BlogServer.Services.csproj" />
   </ItemGroup>
 

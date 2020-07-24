@@ -15,8 +15,7 @@ namespace BlogServer.App.Controllers
             this.postsService = postsService;
         }
 
-        [HttpGet]
-        [Route("categories")]
+        [HttpGet("categories")]
         public IActionResult GetCategories()
         {
             string[] categories = this.postsService.GetCategories();

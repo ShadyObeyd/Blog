@@ -1,14 +1,14 @@
 ﻿using BlogServer.Models.DomainModels;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace BlogServer.Data
 {
-    public class BlogContext : DbContext
+    public class BlogContext : IdentityDbContext<BlogUser>
     {
-        public BlogContext(DbContextOptions options) 
+        public BlogContext(DbContextOptions<BlogContext> options) 
             : base(options)
         {
-
         }
 
         public DbSet<Post> Posts { get; set; }
@@ -17,6 +17,10 @@ namespace BlogServer.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<BlogUser>()
+                        .HasIndex(u => u.Email)
+                        .IsUnique();
+
             base.OnModelCreating(modelBuilder);
         }
     }

@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace BlogServer.Models.DomainModels
 {
@@ -30,7 +31,10 @@ namespace BlogServer.Models.DomainModels
 
         public Category Category { get; set; }
 
-        // TODO Add Author navigation property and foreign key
+        public string AuthorId { get; set; }
+
+        [ForeignKey(nameof(AuthorId))]
+        public BlogUser Author { get; set; }
 
         public IEnumerable<Comment> Comments { get; set; }
     }

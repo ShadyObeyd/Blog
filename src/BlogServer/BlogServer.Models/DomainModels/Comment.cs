@@ -22,7 +22,10 @@ namespace BlogServer.Models.DomainModels
 
         public DateTime CreatetOn { get; set; }
 
-        // TODO Add Author navigation property and foreign key
+        public string AuthorId { get; set; }
+
+        [ForeignKey(nameof(AuthorId))]
+        public BlogUser Author { get; set; }
 
         public int PostId { get; set; }
 
