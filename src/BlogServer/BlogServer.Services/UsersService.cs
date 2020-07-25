@@ -71,8 +71,6 @@ namespace BlogServer.Services
                 return new ResultData<ResponseModel>("An error occured!", false, null);
             }
 
-            await this.signInManager.SignInAsync(user, true);
-
             var model = this.CreateResponseModel(user);
 
             return new ResultData<ResponseModel>("User created successfully!", true, model);
@@ -95,7 +93,7 @@ namespace BlogServer.Services
                 new Claim(JwtRegisteredClaimNames.NameId, user.Email)
             };
 
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("App Secret"));
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("super secret key"));
 
             var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
 

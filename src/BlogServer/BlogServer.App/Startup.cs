@@ -1,6 +1,7 @@
 using BlogServer.Data;
 using BlogServer.Models.DomainModels;
 using BlogServer.Services;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
@@ -8,6 +9,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 namespace BlogServer.App
 {
@@ -39,12 +42,34 @@ namespace BlogServer.App
 
             services.AddControllers();
 
-            var builder = services.AddIdentityCore<BlogUser>();
+            var builder = services.AddIdentityCore<BlogUser>(o => 
+            {
+                o.SignIn.RequireConfirmedEmail = false;
+                o.Password.RequireDigit = false;
+                o.Password.RequiredLength = 3;
+                o.Password.RequiredUniqueChars = 0;
+                o.Password.RequireLowercase = false;
+                o.Password.RequireNonAlphanumeric = false;
+                o.Password.RequireUppercase = false;
+            });
+
             var identityBuilder = new IdentityBuilder(builder.UserType, builder.Services);
             identityBuilder.AddEntityFrameworkStores<BlogContext>();
             identityBuilder.AddSignInManager<SignInManager<BlogUser>>();
 
-            services.AddAuthentication();
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("super secret key"));
+
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                    .AddJwtBearer(o => 
+                    {
+                        o.TokenValidationParameters = new TokenValidationParameters
+                        {
+                            ValidateIssuerSigningKey = true,
+                            IssuerSigningKey = key,
+                            ValidateAudience = false,
+                            ValidateIssuer = false
+                        };
+                    });
 
             // Application services
 
@@ -64,10 +89,10 @@ namespace BlogServer.App
 
             app.UseRouting();
 
+            app.UseCors(CorsPolicy);
+
             app.UseAuthentication();
             app.UseAuthorization();
-
-            app.UseCors(CorsPolicy);
 
             app.UseEndpoints(endpoints =>
             {

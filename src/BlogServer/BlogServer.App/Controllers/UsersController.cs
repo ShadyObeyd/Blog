@@ -1,6 +1,8 @@
 ﻿using BlogServer.Models.RequestModels.Users;
 using BlogServer.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
 
 namespace BlogServer.App.Controllers
 {
@@ -16,9 +18,16 @@ namespace BlogServer.App.Controllers
         }
 
         [HttpPost("register")]
-        public IActionResult Register([FromForm] RegisterModel model)
+        public async  Task<IActionResult> Register([FromForm] RegisterModel model)
         {
+            var result = await this.usersService.Register(model.Email, model.Password, model.RepeatPassword);
 
+            if (!result.Success)
+            {
+                return BadRequest(new { message = result.Message });
+            }
+
+            return Ok(result.Data);
         }
     }
 }
