@@ -12,16 +12,20 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using BlogServer.Utilities;
+using Microsoft.AspNetCore.Http;
+using System.Linq;
 
 namespace BlogServer.Services
 {
     public class UsersService
     {
         private readonly SignInManager<BlogUser> signInManager;
+        private readonly IHttpContextAccessor httpContextAccessor;
 
-        public UsersService(SignInManager<BlogUser> signInManager)
+        public UsersService(SignInManager<BlogUser> signInManager, IHttpContextAccessor httpContextAccessor)
         {
             this.signInManager = signInManager;
+            this.httpContextAccessor = httpContextAccessor;
         }
 
         public async Task<ResultData<ResponseModel>> Register(string email, string password, string repeatPassword)
@@ -113,14 +117,16 @@ namespace BlogServer.Services
                 return new ResultData<ResponseModel>(Constants.InvalidEmailOrPasswordMessage, false, null);
             }
 
-            ResponseModel model = new ResponseModel
-            {
-                Id = user.Id,
-                Email = user.Email,
-                Token = this.GenerateJwt(user)
-            };
+            ResponseModel model = this.CreateResponseModel(user);
 
             return new ResultData<ResponseModel>(Constants.UserLoginSuccessMessage, true, model);
+        }
+
+        public string GetCurrentUserUsername()
+        {
+            var username = this.httpContextAccessor.HttpContext.User?.Claims?.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
+
+            return username;
         }
 
         private ResponseModel CreateResponseModel(BlogUser user)
