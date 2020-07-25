@@ -11,14 +11,13 @@ using System.Security.Claims;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using BlogServer.Utilities;
 
 namespace BlogServer.Services
 {
     public class UsersService
     {
         private readonly SignInManager<BlogUser> signInManager;
-
-        private const string EmailPattern = @"^[A-Za-z0-9]+@[A-Za-z]+\.[a-z]{2,3}$";
 
         public UsersService(SignInManager<BlogUser> signInManager)
         {
@@ -27,53 +26,101 @@ namespace BlogServer.Services
 
         public async Task<ResultData<ResponseModel>> Register(string email, string password, string repeatPassword)
         {
-            var existingUser = await this.signInManager.UserManager.Users.FirstOrDefaultAsync(u => u.Email == email);
+            BlogUser existingUser = await this.signInManager.UserManager.Users.FirstOrDefaultAsync(u => u.Email == email);
 
             if (existingUser != null)
             {
-                return new ResultData<ResponseModel>("Email is taken!", false, null);
+                return new ResultData<ResponseModel>(Constants.EmailTakenMessage, false, null);
             }
 
             if (string.IsNullOrEmpty(email))
             {
-                return new ResultData<ResponseModel>("Email must not be empty!", false, null);
+                return new ResultData<ResponseModel>(Constants.EmptyEmailMessage, false, null);
             }
 
-            Match match = Regex.Match(email, EmailPattern);
+            Match match = Regex.Match(email, Constants.EmailPattern);
 
             if (!match.Success)
             {
-                return new ResultData<ResponseModel>("Invalid email!", false, null);
+                return new ResultData<ResponseModel>(Constants.InvalidEmailMessage, false, null);
             }
 
 
             if (string.IsNullOrEmpty(password))
             {
-                return new ResultData<ResponseModel>("Password cannot be empty!", false, null);
+                return new ResultData<ResponseModel>(Constants.PasswordEmptyMessage, false, null);
             }
 
             if (password.Length < 3)
             {
-                return new ResultData<ResponseModel>("Passowrd length must be at least 3 characters long!", false, null);
+                return new ResultData<ResponseModel>(Constants.PasswordTooShortMessage, false, null);
             }
 
             if (password != repeatPassword)
             {
-                return new ResultData<ResponseModel>("Passwords don't match", false, null);
+                return new ResultData<ResponseModel>(Constants.PasswordsDontMatchMessage, false, null);
             }
 
-            var user = this.CreateUser(email);
+            BlogUser user = this.CreateUser(email);
 
-            var createResult = await this.signInManager.UserManager.CreateAsync(user, password);
+            IdentityResult createResult = await this.signInManager.UserManager.CreateAsync(user, password);
 
             if (!createResult.Succeeded)
             {
-                return new ResultData<ResponseModel>("An error occured!", false, null);
+                return new ResultData<ResponseModel>(Constants.GenericErrorMessage, false, null);
             }
 
-            var model = this.CreateResponseModel(user);
+            ResponseModel model = this.CreateResponseModel(user);
 
-            return new ResultData<ResponseModel>("User created successfully!", true, model);
+            return new ResultData<ResponseModel>(Constants.UserRegisteredSuccessMessage, true, model);
+        }
+
+        public async Task<ResultData<ResponseModel>> Login(string email, string password)
+        {
+            if (string.IsNullOrEmpty(email))
+            {
+                return new ResultData<ResponseModel>(Constants.InvalidEmailOrPasswordMessage, false, null);
+            }
+
+            Match match = Regex.Match(email, Constants.EmailPattern);
+
+            if (!match.Success)
+            {
+                return new ResultData<ResponseModel>(Constants.InvalidEmailOrPasswordMessage, false, null);
+            }
+
+            if (string.IsNullOrEmpty(password))
+            {
+                return new ResultData<ResponseModel>(Constants.InvalidEmailOrPasswordMessage, false, null);
+            }
+
+            if (password.Length < 3)
+            {
+                return new ResultData<ResponseModel>(Constants.InvalidEmailOrPasswordMessage, false, null);
+            }
+
+            BlogUser user = await this.signInManager.UserManager.Users.FirstOrDefaultAsync(u => u.Email == email);
+
+            if (user == null)
+            {
+                return new ResultData<ResponseModel>(Constants.InvalidEmailOrPasswordMessage, false, null);
+            }
+
+            bool passwordIsCorrect = await this.signInManager.UserManager.CheckPasswordAsync(user, password);
+
+            if (!passwordIsCorrect)
+            {
+                return new ResultData<ResponseModel>(Constants.InvalidEmailOrPasswordMessage, false, null);
+            }
+
+            ResponseModel model = new ResponseModel
+            {
+                Id = user.Id,
+                Email = user.Email,
+                Token = this.GenerateJwt(user)
+            };
+
+            return new ResultData<ResponseModel>(Constants.UserLoginSuccessMessage, true, model);
         }
 
         private ResponseModel CreateResponseModel(BlogUser user)
@@ -93,7 +140,7 @@ namespace BlogServer.Services
                 new Claim(JwtRegisteredClaimNames.NameId, user.Email)
             };
 
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("super secret key"));
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Constants.AppSecret));
 
             var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
 

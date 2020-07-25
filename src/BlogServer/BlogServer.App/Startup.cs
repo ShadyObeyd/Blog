@@ -1,6 +1,7 @@
 using BlogServer.Data;
 using BlogServer.Models.DomainModels;
 using BlogServer.Services;
+using BlogServer.Utilities;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -16,8 +17,6 @@ namespace BlogServer.App
 {
     public class Startup
     {
-        private const string CorsPolicy = "CorsPolicy";
-
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -32,7 +31,7 @@ namespace BlogServer.App
 
             services.AddCors(o =>
             {
-                o.AddPolicy(CorsPolicy, p =>
+                o.AddPolicy(Constants.CorsPolicy, p =>
                 {
                     p.AllowAnyHeader()
                      .AllowAnyMethod()
@@ -57,7 +56,7 @@ namespace BlogServer.App
             identityBuilder.AddEntityFrameworkStores<BlogContext>();
             identityBuilder.AddSignInManager<SignInManager<BlogUser>>();
 
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("super secret key"));
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Constants.AppSecret));
 
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                     .AddJwtBearer(o => 
@@ -89,7 +88,7 @@ namespace BlogServer.App
 
             app.UseRouting();
 
-            app.UseCors(CorsPolicy);
+            app.UseCors(Constants.CorsPolicy);
 
             app.UseAuthentication();
             app.UseAuthorization();

@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using BlogServer.Utilities;
+using System.ComponentModel.DataAnnotations;
 
 namespace BlogServer.Models.RequestModels.Users
 {
@@ -6,15 +7,15 @@ namespace BlogServer.Models.RequestModels.Users
     {
         private const int MinLength = 3;
 
-        [EmailAddress(ErrorMessage = "Invalid email!")]
+        [EmailAddress(ErrorMessage = Constants.InvalidEmailMessage)]
         [Required]
         public string Email { get; set; }
 
         [Required]
-        [MinLength(MinLength, ErrorMessage = "Password should be at least 3 characters long!")]
+        [MinLength(MinLength, ErrorMessage = Constants.PasswordTooShortMessage)]
         public string Password { get; set; }
 
-        [Compare(nameof(Password), ErrorMessage = "Passwords don't match!")]
+        [Compare(nameof(Password), ErrorMessage = Constants.PasswordsDontMatchMessage)]
         public string RepeatPassword { get; set; }
     }
 }

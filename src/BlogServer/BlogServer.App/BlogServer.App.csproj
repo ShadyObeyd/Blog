@@ -16,6 +16,7 @@
     <ProjectReference Include="..\BlogServer.Data\BlogServer.Data.csproj" />
     <ProjectReference Include="..\BlogServer.Models\BlogServer.Models.csproj" />
     <ProjectReference Include="..\BlogServer.Services\BlogServer.Services.csproj" />
+    <ProjectReference Include="..\BlogServer.Utilities\BlogServer.Utilities.csproj" />
   </ItemGroup>
 
 
