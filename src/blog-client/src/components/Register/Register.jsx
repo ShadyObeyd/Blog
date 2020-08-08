@@ -57,8 +57,11 @@ function Register() {
         })
         .then(promise => promise.json())
         .then(res => {
-            console.log(res);
-        })
+            if (res.message) {
+                setFormIsValid(false);
+                setErrorMessage(res.message);
+            }
+        });
     }
 
     if (!formIsValid) {
