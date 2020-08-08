@@ -33,9 +33,9 @@ namespace BlogServer.App
             {
                 o.AddPolicy(Constants.CorsPolicy, p =>
                 {
-                    p.AllowAnyHeader()
-                     .AllowAnyMethod()
-                     .WithOrigins("http://localhost:3000");
+                    p.WithOrigins("http://localhost:3000")
+                     .AllowAnyHeader()
+                     .AllowAnyMethod();
                 });
             });
 
@@ -85,7 +85,7 @@ namespace BlogServer.App
             }
 
             app.UseHttpsRedirection();
-
+            app.UseStaticFiles();
             app.UseRouting();
 
             app.UseCors(Constants.CorsPolicy);

@@ -17,7 +17,7 @@ namespace BlogServer.App.Controllers
         }
 
         [HttpPost("register")]
-        public async  Task<IActionResult> Register([FromForm] RegisterModel model)
+        public async Task<IActionResult> Register([FromBody] RegisterModel model)
         {
             var result = await this.usersService.Register(model.Email, model.Password, model.RepeatPassword);
 
@@ -30,7 +30,7 @@ namespace BlogServer.App.Controllers
         }
 
         [HttpPost("login")]
-        public async Task<IActionResult> Login([FromForm] LoginModel model)
+        public async Task<IActionResult> Login([FromBody] LoginModel model)
         {
             var result = await this.usersService.Login(model.Email, model.Password);
 

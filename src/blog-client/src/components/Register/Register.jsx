@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import styles from './Register.module.css';
 import Button from '../Button/Button';
 import Error from '../Error/Error';
-import { emailPattern, passwordMinLength, invalidEmailMessage, invalidPasswordMessage, invalidRePasswordMessage } from '../../constants';
+import { emailPattern, passwordMinLength, invalidEmailMessage, invalidPasswordMessage, invalidRePasswordMessage, baseUrl } from '../../constants';
 
 function Register() {
     const [email, setEmail] = useState('');
@@ -44,7 +44,21 @@ function Register() {
             return;
         }
 
-        // TODO Make request to back-end
+        fetch(baseUrl + '/users/register', {
+            method: 'POST',
+            body: JSON.stringify({
+                email : email,
+                password: password,
+                repeatPassword: repeatPassword
+            }),
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+        .then(promise => promise.json())
+        .then(res => {
+            console.log(res);
+        })
     }
 
     if (!formIsValid) {
