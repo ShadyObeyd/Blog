@@ -3,9 +3,9 @@ import styles from './Login.module.css';
 import { Link } from 'react-router-dom';
 import Button from '../Button/Button';
 import Error from '../Error/Error';
-import { emailPattern, invalidEmailMessage, passwordMinLength, invalidPasswordMessage } from '../../constants';
+import { login } from '../../services/users-service';
 
-function Login() {
+function Login(props) {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [formIsValid, setFormIsValid] = useState(true);
@@ -19,22 +19,9 @@ function Login() {
         setPassword(event.target.value);
     }
 
-    function buttonClicked(event) {
+    async function buttonClicked(event) {
         event.preventDefault();
-
-        if (!email.match(emailPattern)) {
-           setFormIsValid(false);
-           setErrorMessage(invalidEmailMessage);
-           return; 
-        }
-
-        if (password.length < passwordMinLength) {
-            setFormIsValid(false);
-            setErrorMessage(invalidPasswordMessage);
-            return;
-        }
-
-        // TODO Make request to back-end
+        await login(email, password, setFormIsValid, setErrorMessage, props);
     }
 
     if (!formIsValid) {
