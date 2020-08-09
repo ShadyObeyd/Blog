@@ -1,5 +1,6 @@
 ﻿using BlogServer.Models.RequestModels.Users;
 using BlogServer.Services;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
@@ -27,9 +28,7 @@ namespace BlogServer.App.Controllers
                 return BadRequest(new { message = result.Message });
             }
 
-            Response.Headers.Add("Authorization", result.Data.Token);
-
-            return Ok();
+            return Ok(result.Data);
         }
 
         [HttpPost("login")]

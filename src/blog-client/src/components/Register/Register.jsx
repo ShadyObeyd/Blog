@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import styles from './Register.module.css';
 import Button from '../Button/Button';
 import Error from '../Error/Error';
-import { emailPattern, passwordMinLength, invalidEmailMessage, invalidPasswordMessage, invalidRePasswordMessage, baseUrl } from '../../constants';
+import { register } from '../../services/users-service';
 
 function Register() {
     const [email, setEmail] = useState('');
@@ -25,43 +25,7 @@ function Register() {
 
     function buttonClicked(event) {
         event.preventDefault();
-
-        if (!email.match(emailPattern)) {
-            setFormIsValid(false);
-            setErrorMessage(invalidEmailMessage);
-            return;
-        }
-
-        if (password.length < passwordMinLength) {
-            setFormIsValid(false);
-            setErrorMessage(invalidPasswordMessage);
-            return;
-        }
-
-        if (repeatPassword !== password) {
-            setFormIsValid(false);
-            setErrorMessage(invalidRePasswordMessage);
-            return;
-        }
-
-        fetch(baseUrl + '/users/register', {
-            method: 'POST',
-            body: JSON.stringify({
-                email : email,
-                password: password,
-                repeatPassword: repeatPassword
-            }),
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        })
-        .then(promise => promise.json())
-        .then(res => {
-            if (res.message) {
-                setFormIsValid(false);
-                setErrorMessage(res.message);
-            }
-        });
+        register(email, password, repeatPassword, setFormIsValid, setErrorMessage);
     }
 
     if (!formIsValid) {
