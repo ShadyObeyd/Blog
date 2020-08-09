@@ -4,7 +4,7 @@ import Button from '../Button/Button';
 import Error from '../Error/Error';
 import { register } from '../../services/users-service';
 
-function Register() {
+function Register(props) {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [repeatPassword, setRepeatPassword] = useState('');
@@ -23,9 +23,9 @@ function Register() {
         setRepeatPassword(event.target.value);
     }
 
-    function buttonClicked(event) {
+    async function buttonClicked(event) {
         event.preventDefault();
-        register(email, password, repeatPassword, setFormIsValid, setErrorMessage);
+        await register(email, password, repeatPassword, setFormIsValid, setErrorMessage, props);
     }
 
     if (!formIsValid) {
