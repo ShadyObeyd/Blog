@@ -2,7 +2,7 @@ import { emailPattern, passwordMinLength, invalidEmailMessage, invalidPasswordMe
 
 const usersUrl = baseUrl + '/users';
 
-export async function register(email, password, repeatPassword, setFormIsValid, setErrorMessage, props) {
+export async function register(email, password, repeatPassword, setFormIsValid, setErrorMessage, props, userContext) {
     if (!email.match(emailPattern)) {
         setFormIsValid(false);
         setErrorMessage(invalidEmailMessage);
@@ -43,12 +43,13 @@ export async function register(email, password, repeatPassword, setFormIsValid, 
         else {
             let token = res.token;
             document.cookie = `x-auth-token=${token}`;
+            saveUserInContext(res, userContext);
             props.history.push('/');
         }
     }
 }
 
-export async function login(email, password, setFormIsValid, setErrorMessage, props) {
+export async function login(email, password, setFormIsValid, setErrorMessage, userContext) {
     if (!email.match(emailPattern)) {
         setFormIsValid(false);
         setErrorMessage(invalidEmailMessage);
@@ -82,7 +83,16 @@ export async function login(email, password, setFormIsValid, setErrorMessage, pr
         else {
             let token = res.token;
             document.cookie = `x-auth-token=${token}`;
-            console.log(res);
+            saveUserInContext(res, userContext);
         }
     }
+}
+
+function saveUserInContext(res, userContext) {
+    let user = {
+        id: res.id,
+        email: res.email
+    };
+
+    userContext.login(user);
 }

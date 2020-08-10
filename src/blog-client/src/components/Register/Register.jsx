@@ -3,6 +3,8 @@ import styles from './Register.module.css';
 import Button from '../Button/Button';
 import Error from '../Error/Error';
 import { register } from '../../services/users-service';
+import { useContext } from 'react';
+import UserContext from '../../context';
 
 function Register(props) {
     const [email, setEmail] = useState('');
@@ -10,6 +12,7 @@ function Register(props) {
     const [repeatPassword, setRepeatPassword] = useState('');
     const [formIsValid, setFormIsValid] = useState(true);
     const [errorMessage, setErrorMessage] = useState('');
+    const userContext = useContext(UserContext);
 
     function handleEmailChange(event) {
         setEmail(event.target.value);
@@ -25,7 +28,7 @@ function Register(props) {
 
     async function buttonClicked(event) {
         event.preventDefault();
-        await register(email, password, repeatPassword, setFormIsValid, setErrorMessage, props);
+        await register(email, password, repeatPassword, setFormIsValid, setErrorMessage, props, userContext);
     }
 
     if (!formIsValid) {
