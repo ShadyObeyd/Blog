@@ -2,7 +2,7 @@ import React from 'react';
 import Footer from './components/Footer/Footer';
 import Home from './components/Home/Home';
 import Register from './components/Register/Register';
-import { Route } from 'react-router-dom';
+import { Route, Redirect } from 'react-router-dom';
 import UserContext from './context';
 import { useState } from 'react';
 
@@ -22,8 +22,8 @@ function App() {
 
   return (
     <UserContext.Provider value={{user: user, loggedIn: loggedIn, login: login, logout: logout}}>
-      <Route exact path="/" component={Home}></Route>
-      <Route exact path="/register" component={Register}></Route>
+      <Route exact path="/" component={Home} />
+      {loggedIn ? <Redirect to="/" /> : <Route exact path="/register" component={Register} />}
       <Footer />
     </UserContext.Provider>
   );
