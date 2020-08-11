@@ -88,6 +88,11 @@ export async function login(email, password, setFormIsValid, setErrorMessage, us
     }
 }
 
+export function logout(userContext) {
+    document.cookie = 'x-auth-token=';
+    userContext.logout();
+}
+
 function saveUserInContext(res, userContext) {
     let user = {
         id: res.id,

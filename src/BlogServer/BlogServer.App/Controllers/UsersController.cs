@@ -25,7 +25,7 @@ namespace BlogServer.App.Controllers
 
             if (!result.Success)
             {
-                return BadRequest(new { message = result.Message });
+                return Ok(new { message = result.Message });
             }
 
             return Ok(result.Data);
@@ -38,7 +38,7 @@ namespace BlogServer.App.Controllers
 
             if (!result.Success)
             {
-                return BadRequest(new { message = result.Message });
+                return Ok(new { message = result.Message });
             }
 
             return Ok(result.Data);
