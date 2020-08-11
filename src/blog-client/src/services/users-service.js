@@ -53,29 +53,29 @@ export async function login(email, password, setFormIsValid, setErrorMessage, us
     if (!email.match(emailPattern)) {
         setFormIsValid(false);
         setErrorMessage(invalidEmailMessage);
-        return; 
-     }
+        return;
+    }
 
-     if (password.length < passwordMinLength) {
-         setFormIsValid(false);
-         setErrorMessage(invalidPasswordMessage);
-         return;
-     }
+    if (password.length < passwordMinLength) {
+        setFormIsValid(false);
+        setErrorMessage(invalidPasswordMessage);
+        return;
+    }
 
-     let promise = await fetch(usersUrl + '/login', {
-         method: 'POST',
-         body: JSON.stringify({
-             email: email,
-             password: password
-         }),
-         headers: {
+    let promise = await fetch(usersUrl + '/login', {
+        method: 'POST',
+        body: JSON.stringify({
+            email: email,
+            password: password
+        }),
+        headers: {
             'Content-Type': 'application/json'
-         }
-     });
+        }
+    });
 
-     let res = await promise.json();
+    let res = await promise.json();
 
-     if (res) {
+    if (res) {
         if (res.message) {
             setFormIsValid(false);
             setErrorMessage(res.message);
@@ -91,6 +91,33 @@ export async function login(email, password, setFormIsValid, setErrorMessage, us
 export function logout(userContext) {
     document.cookie = 'x-auth-token=';
     userContext.logout();
+}
+
+export async function getTokenDetails() {
+    let token = getCookie('x-auth-token');
+
+    if (!token) {
+        return;
+    }
+
+    let promise = await fetch(usersUrl + '/decode', {
+        method: 'POST',
+        body: JSON.stringify({
+            token
+        }),
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    });
+
+    let res = await promise.json();
+
+    console.log(res);
+}
+
+function getCookie(name) {
+    let cookieValue = document.cookie.match('(^|;) ?' + name + '=([^;]*)(;|$)');
+    return cookieValue ? cookieValue[2] : null;
 }
 
 function saveUserInContext(res, userContext) {

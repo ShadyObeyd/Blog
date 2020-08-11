@@ -14,6 +14,7 @@ using System.Threading.Tasks;
 using BlogServer.Utilities;
 using Microsoft.AspNetCore.Http;
 using System.Linq;
+using BlogServer.Models.ResponseModels.Tokens;
 
 namespace BlogServer.Services
 {
@@ -139,11 +140,29 @@ namespace BlogServer.Services
             };
         }
 
+        public ResultData<TokenInfo> ReturnUserData(string token)
+        {
+            var tokenHandler = new JwtSecurityTokenHandler();
+
+            if (tokenHandler.CanReadToken(token))
+            {
+                var claims = tokenHandler.ReadJwtToken(token).Payload.Claims.ToArray();
+
+                var userId = claims[1].Value;
+                var userEmail = claims[0].Value;
+
+                return new ResultData<TokenInfo>("Token read!", true, new TokenInfo { UserEmail = userEmail, UserId = userId});
+            }
+
+            return new ResultData<TokenInfo>("No token sent!", false, null);
+        }
+
         private string GenerateJwt(BlogUser user)
         {
             var claims = new List<Claim>
             {
-                new Claim(JwtRegisteredClaimNames.NameId, user.Email)
+                new Claim(JwtRegisteredClaimNames.Email, user.Email),
+                new Claim(JwtRegisteredClaimNames.NameId, user.Id)
             };
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Constants.AppSecret));

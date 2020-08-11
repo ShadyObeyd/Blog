@@ -1,4 +1,5 @@
-﻿using BlogServer.Models.RequestModels.Users;
+﻿using BlogServer.Models.RequestModels;
+using BlogServer.Models.RequestModels.Users;
 using BlogServer.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -35,6 +36,19 @@ namespace BlogServer.App.Controllers
         public async Task<IActionResult> Login([FromBody] LoginModel model)
         {
             var result = await this.usersService.Login(model.Email, model.Password);
+
+            if (!result.Success)
+            {
+                return Ok(new { message = result.Message });
+            }
+
+            return Ok(result.Data);
+        }
+
+        [HttpPost("decode")]
+        public IActionResult DecodeToken([FromBody] IncommingToken model)
+        {
+            var result = this.usersService.ReturnUserData(model.Token);
 
             if (!result.Success)
             {

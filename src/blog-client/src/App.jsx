@@ -5,8 +5,14 @@ import Register from './components/Register/Register';
 import { Route, Redirect } from 'react-router-dom';
 import UserContext from './context';
 import { useState } from 'react';
+import { useEffect } from 'react';
+import { getTokenDetails } from './services/users-service';
 
 function App() {
+  useEffect(() => {
+    getTokenDetails();
+  }, []);
+
   const [user, setUser] = useState(null);
   const [loggedIn, setLoggedIn] = useState(false);
 
