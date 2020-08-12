@@ -7,14 +7,14 @@ import UserContext from './context';
 import { useState } from 'react';
 import { useEffect } from 'react';
 import { getTokenDetails } from './services/users-service';
-import Loading from './components/Loading/Loading';
+import Spinner from './components/Spinner/Spinner';
 
 function App() {
   const [user, setUser] = useState(null);
   const [loggedIn, setLoggedIn] = useState(null);
 
   useEffect(() => {
-    getTokenDetails(login);
+    getTokenDetails(login, logout);
   }, []);
 
    const login = (user) => {
@@ -29,7 +29,7 @@ function App() {
 
   if (loggedIn == null) {
     return (
-      <Loading />
+      <Spinner />
     )
   }
 

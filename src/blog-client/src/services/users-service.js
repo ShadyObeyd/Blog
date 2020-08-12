@@ -89,14 +89,15 @@ export async function login(email, password, setFormIsValid, setErrorMessage, us
 }
 
 export function logout(userContext) {
-    document.cookie = 'x-auth-token=';
+    document.cookie = 'x-auth-token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
     userContext.logout();
 }
 
-export async function getTokenDetails(login) {
+export async function getTokenDetails(login, logout) {
     let token = getCookie('x-auth-token');
 
     if (!token) {
+        logout();
         return;
     }
 
@@ -115,6 +116,7 @@ export async function getTokenDetails(login) {
         id: res.id,
         email: res.email
     };
+
     login(user);
 }
 
