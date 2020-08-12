@@ -93,7 +93,7 @@ export function logout(userContext) {
     userContext.logout();
 }
 
-export async function getTokenDetails() {
+export async function getTokenDetails(login) {
     let token = getCookie('x-auth-token');
 
     if (!token) {
@@ -111,8 +111,11 @@ export async function getTokenDetails() {
     });
 
     let res = await promise.json();
-
-    console.log(res);
+    let user = {
+        id: res.id,
+        email: res.email
+    };
+    login(user);
 }
 
 function getCookie(name) {

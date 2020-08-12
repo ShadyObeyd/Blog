@@ -7,14 +7,15 @@ import UserContext from './context';
 import { useState } from 'react';
 import { useEffect } from 'react';
 import { getTokenDetails } from './services/users-service';
+import Loading from './components/Loading/Loading';
 
 function App() {
-  useEffect(() => {
-    getTokenDetails();
-  }, []);
-
   const [user, setUser] = useState(null);
-  const [loggedIn, setLoggedIn] = useState(false);
+  const [loggedIn, setLoggedIn] = useState(null);
+
+  useEffect(() => {
+    getTokenDetails(login);
+  }, []);
 
    const login = (user) => {
     setUser(user);
@@ -24,6 +25,12 @@ function App() {
   const logout = () => {
     setUser(null);
     setLoggedIn(false);
+  }
+
+  if (loggedIn == null) {
+    return (
+      <Loading />
+    )
   }
 
   return (

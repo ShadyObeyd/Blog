@@ -151,7 +151,7 @@ namespace BlogServer.Services
                 var userId = claims[1].Value;
                 var userEmail = claims[0].Value;
 
-                return new ResultData<TokenInfo>("Token read!", true, new TokenInfo { UserEmail = userEmail, UserId = userId});
+                return new ResultData<TokenInfo>("Token read!", true, new TokenInfo { Email = userEmail, Id = userId});
             }
 
             return new ResultData<TokenInfo>("No token sent!", false, null);
