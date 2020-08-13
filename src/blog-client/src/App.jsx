@@ -1,6 +1,7 @@
 import React from 'react';
 import Footer from './components/Footer/Footer';
 import Home from './components/Home/Home';
+import CreatePost from './components/CreatePost/CreatePost';
 import Register from './components/Register/Register';
 import { Route, Redirect } from 'react-router-dom';
 import UserContext from './context';
@@ -17,7 +18,7 @@ function App() {
     getTokenDetails(login, logout);
   }, []);
 
-   const login = (user) => {
+  const login = (user) => {
     setUser(user);
     setLoggedIn(true);
   }
@@ -34,9 +35,10 @@ function App() {
   }
 
   return (
-    <UserContext.Provider value={{user: user, loggedIn: loggedIn, login: login, logout: logout}}>
+    <UserContext.Provider value={{ user: user, loggedIn: loggedIn, login: login, logout: logout }}>
       <Route exact path="/" component={Home} />
       {loggedIn ? <Redirect to="/" /> : <Route exact path="/register" component={Register} />}
+      {loggedIn ? <Route exact path="/create-post" component={CreatePost} /> : <Redirect to='/' />}
       <Footer />
     </UserContext.Provider>
   );

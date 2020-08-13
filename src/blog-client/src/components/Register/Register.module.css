@@ -3,24 +3,6 @@
     text-align: center;
 }
 
-.register label {
-    font-size: 20px;
-}
-
-.register input {
-    width: 50%;
-    margin-top: 20px;
-    margin-bottom: 20px;
-    height: 30px;
-    font-size: 17px;
-    background-color: transparent;
-    border-radius: 10px;
-    color: white;
-    border-color: white;
-    outline: none;
-    padding-left: 8px;
-}
-
 .register ::placeholder{
     color: white;
 }

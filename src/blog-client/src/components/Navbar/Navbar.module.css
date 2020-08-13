@@ -1,3 +1,13 @@
 .navlink {
-    padding-left: 40%;
+    padding-left: 35%;
+}
+
+.navlink a {
+    text-decoration: none;
+    color: white;
+    font-size: 25px;
+}
+
+.navlink a:hover{
+    color: wheat;
 }

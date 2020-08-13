@@ -5,6 +5,8 @@ import Error from '../Error/Error';
 import { register } from '../../services/users-service';
 import { useContext } from 'react';
 import UserContext from '../../context';
+import Input from '../Form/Input/Input';
+import Label from '../Form/Label/Label';
 
 function Register(props) {
     const [email, setEmail] = useState('');
@@ -43,17 +45,17 @@ function Register(props) {
             <hr />
             {!formIsValid ? <Error errorMessage={errorMessage} /> : null}
             <form>
-                <label htmlFor="email">Email</label>
+                <Label forr="email" text="Email"/>
                 <br />
-                <input id="email" type="email" onChange={handleEmailChange} placeholder="Email..." />
+                <Input id="email" type="email" changed={handleEmailChange} placeholder="Email..." />
                 <br />
-                <label htmlFor="password">Password</label>
+                <Label forr="password" text="Password" />
                 <br />
-                <input id="password" type="password" onChange={handlePasswordChange} placeholder="Password..." />
+                <Input id="password" type="password" changed={handlePasswordChange} placeholder="Password..." />
                 <br />
-                <label htmlFor="repeat-password">Repeat Password</label>
+                <Label forr="repeat-password" text="Repeat Password"/>
                 <br />
-                <input id="repeat-password" type="password" onChange={handleRepeatPasswordChange} placeholder="Repeat Password..." />
+                <Input id="repeat-password" type="password" changed={handleRepeatPasswordChange} placeholder="Repeat Password..." />
                 <br />
                 <Button clicked={buttonClicked} text="Register" />
             </form>
