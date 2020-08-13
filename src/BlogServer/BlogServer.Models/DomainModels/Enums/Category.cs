@@ -18,6 +18,7 @@
         Tourism = 13,
         History = 14,
         Recipes = 15,
-        Other = 16
+        Other = 16,
+        All = 17
     }
 }
