@@ -1,5 +1,7 @@
 ﻿using System.Threading.Tasks;
+using BlogServer.Models.RequestModels.Posts;
 using BlogServer.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BlogServer.App.Controllers
@@ -21,6 +23,20 @@ namespace BlogServer.App.Controllers
             string[] categories = this.postsService.GetCategories();
 
             return Ok(categories);
+        }
+
+        [Authorize]
+        [HttpPost("create")]
+        public async Task<IActionResult> Create([FromBody] CreateModel model)
+        {
+            var result = await this.postsService.CreatePost(model.Title, model.Content, model.Category, model.AuthorId);
+
+            if (!result.Success)
+            {
+                return Ok(new { message = result.Message });
+            }
+
+            return Ok(result.Data);
         }
     }
 }

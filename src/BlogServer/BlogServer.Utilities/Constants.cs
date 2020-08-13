@@ -1,4 +1,6 @@
-﻿namespace BlogServer.Utilities
+﻿using System.Runtime.CompilerServices;
+
+namespace BlogServer.Utilities
 {
     public class Constants
     {
@@ -17,5 +19,14 @@
         public const string PasswordsDontMatchMessage = "Passwords don't match!";
         public const string UserRegisteredSuccessMessage = "User registered successfully!";
         public const string UserLoginSuccessMessage = "User logged in successfully!";
+
+        public const int ContentMinLength = 20;
+
+        public const string InvalidTitleMessage = "Post title cannot be empty!";
+        public const string InvalidContentMessage = "Content cannot be less than 20 characters!";
+        public const string InvalidCategoryMessage = "Category cannot be empty!";
+        public const string PostExistsMessage = "Post with that title already exists!";
+
+        public const string PostCreatedMessage = "Post created successfully!";
     }
 }

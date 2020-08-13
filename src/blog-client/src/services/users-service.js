@@ -120,7 +120,7 @@ export async function getTokenDetails(login, logout) {
     login(user);
 }
 
-function getCookie(name) {
+export function getCookie(name) {
     let cookieValue = document.cookie.match('(^|;) ?' + name + '=([^;]*)(;|$)');
     return cookieValue ? cookieValue[2] : null;
 }
