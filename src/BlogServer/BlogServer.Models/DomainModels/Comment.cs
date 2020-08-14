@@ -10,7 +10,7 @@ namespace BlogServer.Models.DomainModels
 
         public Comment()
         {
-            this.CreatetOn = DateTime.Today;
+            this.CreatetOn = DateTime.Now;
         }
 
         [Key]

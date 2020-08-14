@@ -17,6 +17,19 @@ namespace BlogServer.App.Controllers
             this.postsService = postsService;
         }
 
+        [HttpPost("sort")]
+        public async Task<IActionResult> GetSortedPosts(ByCategoryModel model)
+        {
+            var result = await this.postsService.GetPostsByDateAndCategory(model.Category);
+
+            if (!result.Success)
+            {
+                return Ok(new { message = result.Message });
+            }
+
+            return Ok(result.Data);
+        }
+
         [HttpGet("all")]
         public async Task<IActionResult> GetAllPosts()
         {

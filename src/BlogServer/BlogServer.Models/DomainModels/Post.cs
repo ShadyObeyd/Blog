@@ -13,7 +13,7 @@ namespace BlogServer.Models.DomainModels
         public Post()
         {
             this.Comments = new HashSet<Comment>();
-            this.CreatedOn = DateTime.Today;
+            this.CreatedOn = DateTime.Now;
         }
 
         [Key]

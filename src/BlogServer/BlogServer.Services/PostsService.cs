@@ -23,6 +23,41 @@ namespace BlogServer.Services
             this.db = db;
         }
 
+        public async Task<ResultData<IEnumerable<PostHomeModel>>> GetPostsByDateAndCategory(string category)
+        {
+            if (category == "All")
+            {
+                return await this.GetAllPostsByDate();
+            }
+
+            bool postsExist = await this.db.Posts.AnyAsync();
+
+            if (!postsExist)
+            {
+                return new ResultData<IEnumerable<PostHomeModel>>(Constants.CategoryMissingMessage, false, null);
+            }
+
+            Category postCategory;
+            var tryParseCategory = Enum.TryParse(category, true, out postCategory);
+
+            if (!tryParseCategory)
+            {
+                return new ResultData<IEnumerable<PostHomeModel>>(Constants.InvalidCategoryMessage, false, null);
+            }
+
+            var posts = await this.db.Posts.Where(p => p.Category == postCategory)
+                                           .OrderByDescending(p => p.CreatedOn)
+                                           .Select(p => new PostHomeModel
+                                            {
+                                                Id = p.Id,
+                                                Title = p.Title,
+                                                Content = p.Content
+
+                                            }).ToArrayAsync();
+
+            return new ResultData<IEnumerable<PostHomeModel>>(Constants.PostExistsMessage, true, posts);
+        }
+
         public async Task<ResultData<IEnumerable<PostHomeModel>>> GetAllPostsByDate()
         {
             bool postsExist = await this.db.Posts.AnyAsync();

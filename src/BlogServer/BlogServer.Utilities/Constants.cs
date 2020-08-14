@@ -29,6 +29,7 @@ namespace BlogServer.Utilities
 
         public const string PostCreatedMessage = "Post created successfully!";
         public const string NoPostsMessage = "There are no posts yet!";
+        public const string CategoryMissingMessage = "No posts with this category!";
         public const string PostsExistMessage = "Posts exist.";
     }
 }

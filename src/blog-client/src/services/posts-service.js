@@ -71,3 +71,19 @@ export async function getPosts() {
 
     return res;
 }
+
+export async function getPostsByCategory(category) {
+    let promise = await fetch(postsUrl + '/sort', {
+        method: 'POST',
+        body: JSON.stringify({
+            category
+        }),
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    });
+
+    let res = await promise.json();
+    
+    return res;
+}

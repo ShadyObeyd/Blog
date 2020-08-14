@@ -16,7 +16,7 @@ function Home() {
     const userContext = useContext(UserContext);
     const [posts, setPosts] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
-    
+
 
     useEffect(() => {
         allPosts();
@@ -26,7 +26,7 @@ function Home() {
         let posts = await getPosts();
         setPosts(posts);
     }
-    
+
     const postsPerPage = 6
     const indexOfLastPost = currentPage * postsPerPage;
     const indexofFirstPost = indexOfLastPost - postsPerPage;
@@ -37,7 +37,7 @@ function Home() {
     }
 
     return (
-        <PostContext.Provider value={posts}>
+        <PostContext.Provider value={{posts, getPosts: setPosts}}>
             {userContext.loggedIn ?
                 <h1 className={styles['text-center']}>Welcome, {userContext.user.email}!</h1> :
                 <h1 className={styles['text-center']}>Welcome, blogger!</h1>}
@@ -45,7 +45,7 @@ function Home() {
             <Sidebar />
             {userContext.loggedIn ? <Navbar /> : <Login />}
             <Posts posts={currentPosts} />
-            <Pagination postsPerPage={postsPerPage} totalPosts={posts.length} clicked={paginate}/>
+            <Pagination postsPerPage={postsPerPage} totalPosts={posts.length} clicked={paginate} />
         </PostContext.Provider>
     );
 }

@@ -10,7 +10,7 @@ function Navbar() {
     const userContext = useContext(UserContext);
 
     function getCurrentUserPosts() {
-
+        console.log("My Posts");
     }
     
     function logOut() {
