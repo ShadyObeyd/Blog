@@ -20,6 +20,7 @@ function Sidebar() {
         <div className={style.sidenav}>
             <h3>Categories</h3>
             {categories.map((c, index) => <NavLink text={c} key={index}/>)}
+            <NavLink  text="All"/>
         </div>
     );
 }

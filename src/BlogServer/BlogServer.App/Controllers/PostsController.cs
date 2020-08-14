@@ -17,6 +17,19 @@ namespace BlogServer.App.Controllers
             this.postsService = postsService;
         }
 
+        [HttpGet("all")]
+        public async Task<IActionResult> GetAllPosts()
+        {
+            var result = await this.postsService.GetAllPostsByDate();
+
+            if (!result.Success)
+            {
+                return Ok(new { message = result.Message });
+            }
+
+            return Ok(result.Data);
+        }
+
         [HttpGet("categories")]
         public IActionResult GetCategories()
         {

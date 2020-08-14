@@ -7,6 +7,7 @@ using BlogServer.Services.Results;
 using BlogServer.Utilities;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
@@ -22,11 +23,24 @@ namespace BlogServer.Services
             this.db = db;
         }
 
-        public string[] GetCategories()
+        public async Task<ResultData<IEnumerable<PostHomeModel>>> GetAllPostsByDate()
         {
-            string[] categories = Enum.GetNames(typeof(Category));
+            bool postsExist = await this.db.Posts.AnyAsync();
 
-            return categories;
+            if (!postsExist)
+            {
+                return new ResultData<IEnumerable<PostHomeModel>>(Constants.NoPostsMessage, false, null);
+            }
+
+            var posts = await this.db.Posts.OrderByDescending(p => p.CreatedOn).Select(p => new PostHomeModel
+            {
+                Id = p.Id,
+                Title = p.Title,
+                Content = p.Content
+                
+            }).ToArrayAsync();
+
+            return new ResultData<IEnumerable<PostHomeModel>>(Constants.PostExistsMessage, true, posts);
         }
 
         public async Task<ResultData<PostDetailsModel>> CreatePost(string title, string content, string category, string authorId)
@@ -88,6 +102,13 @@ namespace BlogServer.Services
                     Content = c.Content
                 })
             });
+        }
+
+        public string[] GetCategories()
+        {
+            string[] categories = Enum.GetNames(typeof(Category));
+
+            return categories;
         }
     }
 }

@@ -28,5 +28,7 @@ namespace BlogServer.Utilities
         public const string PostExistsMessage = "Post with that title already exists!";
 
         public const string PostCreatedMessage = "Post created successfully!";
+        public const string NoPostsMessage = "There are no posts yet!";
+        public const string PostsExistMessage = "Posts exist.";
     }
 }

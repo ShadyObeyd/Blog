@@ -46,6 +46,28 @@ export async function createPost(title, content, category, authorId, setFormIsVa
     });
 
     var res = await promise.json();
+
+    if (!res) {
+        return;
+    }
+
+    if (res.message) {
+        setErrorMessage(res.message);
+        setFormIsValid(false);
+        return;
+    }
+
     console.log(res);
     // TODO Redirect to details page
+}
+
+export async function getPosts() {
+    let promise = await fetch(postsUrl + '/all');
+    let res = await promise.json();
+
+    if (res.message) {
+        return;
+    }
+
+    return res;
 }
