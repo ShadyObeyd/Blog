@@ -5,6 +5,7 @@ import { fetchCategories, getPostsByCategory } from '../../services/posts-servic
 import { useContext } from 'react';
 import PostContext from '../../posts-context';
 import Error from '../Error/Error';
+import { noPostsWithCategoryMessage } from '../../constants';
 
 function Sidebar() {
     const [categories, setCategories] = useState([]);
@@ -42,7 +43,7 @@ function Sidebar() {
     return (
         <div className={style.sidenav}>
             <h3>Categories</h3>
-            {error ? <Error errorMessage="No posts with this category!" /> : null}
+            {error ? <Error errorMessage={noPostsWithCategoryMessage} /> : null}
             {categories.map((c, index) => <NavLink text={c} clicked={handleClick} key={index} />)}
             <NavLink text="All" clicked={handleClick} />
         </div>

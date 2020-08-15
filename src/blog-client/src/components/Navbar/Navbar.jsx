@@ -5,10 +5,11 @@ import { logout } from '../../services/users-service';
 import { useContext } from 'react';
 import UserContext from '../../context';
 import { Link } from 'react-router-dom';
-import { getCurrentUserPosts } from '../../services/posts-service';
+import { getCurrentUserPosts, getPosts } from '../../services/posts-service';
 import PostContext from '../../posts-context';
 import { useState } from 'react';
 import Error from '../Error/Error';
+import { userHasNoPostsMessage } from '../../constants';
 
 function Navbar() {
     const userContext = useContext(UserContext);
@@ -27,8 +28,10 @@ function Navbar() {
         postsContext.getPosts(userPosts);
     }
     
-    function logOut() {
+    async function logOut() {
         logout(userContext);
+        let posts = await getPosts();
+        postsContext.getPosts(posts);
     }
 
     if (error) {
@@ -39,7 +42,7 @@ function Navbar() {
 
     return (
         <div className={styles.navlink}>
-            {error ? <Error errorMessage="You currently don't have any posts!"/> : null}
+            {error ? <Error errorMessage={userHasNoPostsMessage}/> : null}
             <Link to="/create-post">Create New Post</Link>
             <TopLink text="My Posts" clicked={getUserPosts} />
             <TopLink text="Logout" clicked={logOut} />

@@ -1,4 +1,5 @@
 import { emailPattern, passwordMinLength, invalidEmailMessage, invalidPasswordMessage, invalidRePasswordMessage, baseUrl } from '../constants';
+import { getPosts } from './posts-service';
 
 const usersUrl = baseUrl + '/users';
 
@@ -49,7 +50,7 @@ export async function register(email, password, repeatPassword, setFormIsValid, 
     }
 }
 
-export async function login(email, password, setFormIsValid, setErrorMessage, userContext) {
+export async function login(email, password, setFormIsValid, setErrorMessage, userContext, postsContext) {
     if (!email.match(emailPattern)) {
         setFormIsValid(false);
         setErrorMessage(invalidEmailMessage);
@@ -84,6 +85,8 @@ export async function login(email, password, setFormIsValid, setErrorMessage, us
             let token = res.token;
             document.cookie = `x-auth-token=${token}`;
             saveUserInContext(res, userContext);
+            let posts = await getPosts();
+            postsContext.getPosts(posts);
         }
     }
 }

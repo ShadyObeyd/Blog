@@ -6,6 +6,7 @@ import Error from '../Error/Error';
 import { login } from '../../services/users-service';
 import { useContext } from 'react';
 import UserContext from '../../context';
+import PostContext from '../../posts-context';
 
 function Login() {
     const [email, setEmail] = useState('');
@@ -13,6 +14,7 @@ function Login() {
     const [formIsValid, setFormIsValid] = useState(true);
     const [errorMessage, setErrorMessage] = useState('');
     const userContext = useContext(UserContext);
+    const postsContext = useContext(PostContext);
 
     function handleEmailChange(event) {
         setEmail(event.target.value);
@@ -24,7 +26,7 @@ function Login() {
 
     async function buttonClicked(event) {
         event.preventDefault();
-        await login(email, password, setFormIsValid, setErrorMessage, userContext);
+        await login(email, password, setFormIsValid, setErrorMessage, userContext, postsContext);
     }
 
     if (!formIsValid) {
