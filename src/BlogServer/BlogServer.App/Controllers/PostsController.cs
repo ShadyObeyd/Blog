@@ -1,5 +1,6 @@
 ﻿using System.Threading.Tasks;
 using BlogServer.Models.RequestModels.Posts;
+using BlogServer.Models.RequestModels.Users;
 using BlogServer.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -17,8 +18,23 @@ namespace BlogServer.App.Controllers
             this.postsService = postsService;
         }
 
+        [Authorize]
+        [HttpPost("current")]
+        public async Task<IActionResult> GetUserPosts([FromBody] UsersPostsModel model)
+        {
+            var result = await this.postsService.GetPostsByUserId(model.Id);
+
+            if (!result.Success)
+            {
+                return Ok(new { message = result.Message });
+            }
+
+            return Ok(result.Data);
+        }
+
+
         [HttpPost("sort")]
-        public async Task<IActionResult> GetSortedPosts(ByCategoryModel model)
+        public async Task<IActionResult> GetSortedPosts([FromBody] ByCategoryModel model)
         {
             var result = await this.postsService.GetPostsByDateAndCategory(model.Category);
 

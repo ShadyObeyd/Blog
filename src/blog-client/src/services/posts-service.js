@@ -87,3 +87,22 @@ export async function getPostsByCategory(category) {
     
     return res;
 }
+
+export async function getCurrentUserPosts(userId) {
+    let token = getCookie('x-auth-token');
+
+    let promise = await fetch(postsUrl + '/current', {
+        method: 'POST',
+        body: JSON.stringify({
+            id: userId
+        }),
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        }
+    });
+
+    let res = await promise.json();
+
+    return res;
+}

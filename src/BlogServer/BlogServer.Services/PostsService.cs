@@ -23,6 +23,25 @@ namespace BlogServer.Services
             this.db = db;
         }
 
+        public async Task<ResultData<IEnumerable<PostHomeModel>>> GetPostsByUserId(string userId)
+        {
+            if (string.IsNullOrEmpty(userId))
+            {
+                return new ResultData<IEnumerable<PostHomeModel>>(Constants.UserHasNoPostsMessage, false, null);
+            }
+
+            var posts = await this.db.Posts.Where(p => p.AuthorId == userId)
+                                     .OrderByDescending(p => p.CreatedOn)
+                                     .Select(p => new PostHomeModel
+                                     {
+                                         Id = p.Id,
+                                         Content = p.Content,
+                                         Title = p.Title
+                                     }).ToArrayAsync();
+
+            return new ResultData<IEnumerable<PostHomeModel>>(Constants.PostsExistMessage, true, posts);
+        }
+
         public async Task<ResultData<IEnumerable<PostHomeModel>>> GetPostsByDateAndCategory(string category)
         {
             if (category == "All")
