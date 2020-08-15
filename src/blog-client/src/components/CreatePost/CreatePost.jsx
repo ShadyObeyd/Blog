@@ -11,12 +11,13 @@ import Button from '../Button/Button';
 import { useContext } from 'react';
 import UserContext from '../../context';
 import Error from '../Error/Error';
+import Spinner from '../Spinner/Spinner';
 
 function CreatePost() {
     const [title, setTitle] = useState('');
     const [content, setContent] = useState('');
     const [category, setCategory] = useState('');
-    const [categories, setCategories] = useState([]);
+    const [categories, setCategories] = useState(null);
     const [errorMessage, setErrorMessage] = useState('');
     const [formIsValid, setFormIsValid] = useState(true);
     const userContext = useContext(UserContext);
@@ -28,6 +29,10 @@ function CreatePost() {
     async function getCategories() {
         let categories = await fetchCategories();
         setCategories(categories);
+    }
+
+    if (categories === null) {
+        return <Spinner />
     }
 
     function handleTitleChange(e) {

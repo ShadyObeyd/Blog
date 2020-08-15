@@ -6,9 +6,10 @@ import { useContext } from 'react';
 import PostContext from '../../posts-context';
 import Error from '../Error/Error';
 import { noPostsWithCategoryMessage } from '../../constants';
+import Spinner from '../Spinner/Spinner';
 
 function Sidebar() {
-    const [categories, setCategories] = useState([]);
+    const [categories, setCategories] = useState(null);
     const [error, setError] = useState(false);
 
     const postContext = useContext(PostContext);
@@ -21,6 +22,10 @@ function Sidebar() {
         let categories = await fetchCategories();
 
         setCategories(categories);
+    }
+
+    if (categories === null) {
+        return <Spinner />
     }
 
     async function handleClick(category) {

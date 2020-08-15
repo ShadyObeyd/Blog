@@ -1,6 +1,6 @@
 import React, { Fragment } from 'react';
 
-function Post({ id, title, content, createdOn, author, comments }) {
+function Post({ id, title, content, category, createdOn, author, comments }) {
     return (
         <Fragment>
             <h1>{title}</h1>

@@ -145,7 +145,7 @@ namespace BlogServer.Services
             {
                 Id = post.Id,
                 AuthorName = post.Author.Email,
-                Category = post.Category,
+                Category = post.Category.ToString(),
                 Content = post.Content,
                 Title = post.Title,
                 CreatedOn = post.CreatedOn.ToString("dd.MM.yyyy", CultureInfo.InvariantCulture),

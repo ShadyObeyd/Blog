@@ -11,10 +11,11 @@ import { getPosts } from '../../services/posts-service';
 import { useState } from 'react';
 import Posts from '../Posts/Posts';
 import Pagination from '../Pagination/Pagination';
+import Spinner from '../Spinner/Spinner';
 
 function Home() {
     const userContext = useContext(UserContext);
-    const [posts, setPosts] = useState([]);
+    const [posts, setPosts] = useState(null);
     const [currentPage, setCurrentPage] = useState(1);
 
 
@@ -25,6 +26,10 @@ function Home() {
     async function allPosts() {
         let posts = await getPosts();
         setPosts(posts);
+    }
+
+    if (posts === null) {
+        return <Spinner />
     }
 
     const postsPerPage = 6
