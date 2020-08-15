@@ -6,7 +6,7 @@ namespace BlogServer.Utilities
     {
         public const string CorsPolicy = "CorsPolicy";
         public const string AppSecret = "super secret key";
-        public const string EmailPattern = @"^[A-Za-z0-9]+@[A-Za-z]+\.[a-z]{2,3}$";
+        public const string EmailPattern = @"^[A-Za-z0-9.]+@[A-Za-z]+\.[a-z]{2,3}$";
 
         public const string GenericErrorMessage = "An error occured!";
 
