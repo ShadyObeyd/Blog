@@ -6,6 +6,7 @@
         public const string AppSecret = "super secret key";
         public const string EmailPattern = @"^[A-Za-z0-9.]+@[A-Za-z]+\.[a-z]{2,3}$";
         public const string DateFormat = "dd.MM.yyyy";
+        public const int StringMinLength = 5;
 
         public const string GenericErrorMessage = "An error occured!";
 
@@ -33,5 +34,9 @@
         public const string UserHasNoPostsMessage = "You currently don't have any posts!";
         public const string PostNotFoundMessage = "Post not found!";
         public const string PostFoundMessage = "Post exists.";
+
+        public const string InvalidCommentMessage = "Comment must be at least 5 characters long!";
+        public const string NoUserMessage = "Cannot add comment if you are not logged in!";
+        public const string NoPostMessage = "Comment must be added to existing post!";
     }
 }

@@ -1,0 +1,9 @@
+.comments h2{
+    text-align: center;
+}
+
+.comments ul {
+    margin-top: 30px;
+    margin-left: 30%;
+    list-style-type: none;
+}

@@ -74,6 +74,7 @@ namespace BlogServer.App
 
             services.AddScoped<PostsService>();
             services.AddScoped<UsersService>();
+            services.AddScoped<CommentsService>();
         }
 
 

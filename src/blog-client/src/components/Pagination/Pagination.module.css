@@ -9,7 +9,7 @@
     bottom: 80px;
 }
 
-ul li {
+.pagination li {
     display: inline;
     margin-left: 16px;
     color: white;
@@ -19,7 +19,7 @@ ul li {
     cursor: pointer;
 }
 
-ul li:hover {
+.pagination li:hover {
     color: wheat;
     border-color: wheat;
 }

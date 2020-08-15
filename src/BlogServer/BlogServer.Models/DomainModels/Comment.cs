@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BlogServer.Utilities;
+using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -6,8 +7,6 @@ namespace BlogServer.Models.DomainModels
 {
     public class Comment
     {
-        private const int StringMinLength = 5;
-
         public Comment()
         {
             this.CreatetOn = DateTime.Now;
@@ -17,7 +16,7 @@ namespace BlogServer.Models.DomainModels
         public int Id { get; set; }
 
         [Required]
-        [MinLength(StringMinLength)]
+        [MinLength(Constants.StringMinLength)]
         public string Content { get; set; }
 
         public DateTime CreatetOn { get; set; }
