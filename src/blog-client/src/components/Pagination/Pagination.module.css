@@ -21,4 +21,5 @@ ul li {
 
 ul li:hover {
     color: wheat;
+    border-color: wheat;
 }

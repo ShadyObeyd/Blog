@@ -18,6 +18,19 @@ namespace BlogServer.App.Controllers
             this.postsService = postsService;
         }
 
+        [HttpPost("post")]
+        public async Task<IActionResult> GetPostById([FromBody] ByIdModel model)
+        {
+            var result = await this.postsService.GetPostById(model.PostId);
+
+            if (!result.Success)
+            {
+                return Ok(new { message = result.Message });
+            }
+
+            return Ok(result.Data);
+        }
+
         [Authorize]
         [HttpPost("current")]
         public async Task<IActionResult> GetUserPosts([FromBody] UsersPostsModel model)

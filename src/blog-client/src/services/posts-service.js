@@ -105,3 +105,18 @@ export async function getCurrentUserPosts(userId) {
 
     return res;
 }
+
+export async function getPostById(postId) {
+    let promise = await fetch(postsUrl + '/post', {
+        method: 'POST',
+        body: JSON.stringify({
+            postId
+        }),
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    });
+
+    let res = await promise.json();
+    return res;
+}

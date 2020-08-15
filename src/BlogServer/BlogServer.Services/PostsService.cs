@@ -1,7 +1,6 @@
 ﻿using BlogServer.Data;
 using BlogServer.Models.DomainModels;
 using BlogServer.Models.DomainModels.Enums;
-using BlogServer.Models.ResponseModels.Comments;
 using BlogServer.Models.ResponseModels.Posts;
 using BlogServer.Services.Results;
 using BlogServer.Utilities;
@@ -21,6 +20,34 @@ namespace BlogServer.Services
         public PostsService(BlogContext db)
         {
             this.db = db;
+        }
+
+        public async Task<ResultData<PostDetailsModel>> GetPostById(int postId)
+        {
+            if (postId == 0)
+            {
+                return new ResultData<PostDetailsModel>(Constants.PostNotFoundMessage, false, null);
+            }
+
+            var post = await this.db.Posts.Include(p => p.Author).Include(p => p.Comments).ThenInclude(c => c.Author).FirstOrDefaultAsync(p => p.Id == postId);
+
+            if (post == null)
+            {
+                return new ResultData<PostDetailsModel>(Constants.PostNotFoundMessage, false, null);
+            }
+
+            var model = new PostDetailsModel
+            {
+                Id = post.Id,
+                AuthorName = post.Author.Email,
+                Category = post.Category.ToString(),
+                Content = post.Content,
+                Title = post.Title,
+                CreatedOn = post.CreatedOn.ToString(Constants.DateFormat, CultureInfo.InvariantCulture),
+                CommentsCount = post.Comments.Count()
+            };
+
+            return new ResultData<PostDetailsModel>(Constants.PostExistsMessage, true, model);
         }
 
         public async Task<ResultData<IEnumerable<PostHomeModel>>> GetPostsByUserId(string userId)
@@ -97,28 +124,28 @@ namespace BlogServer.Services
             return new ResultData<IEnumerable<PostHomeModel>>(Constants.PostExistsMessage, true, posts);
         }
 
-        public async Task<ResultData<PostDetailsModel>> CreatePost(string title, string content, string category, string authorId)
+        public async Task<ResultData<PostIdModel>> CreatePost(string title, string content, string category, string authorId)
         {
             if (string.IsNullOrEmpty(title))
             {
-                return new ResultData<PostDetailsModel>(Constants.InvalidTitleMessage, false, null);
+                return new ResultData<PostIdModel>(Constants.InvalidTitleMessage, false, null);
             }
 
             if (string.IsNullOrEmpty(content) || content.Length < Constants.ContentMinLength)
             {
-                return new ResultData<PostDetailsModel>(Constants.InvalidContentMessage, false, null);
+                return new ResultData<PostIdModel>(Constants.InvalidContentMessage, false, null);
             }
 
             if (string.IsNullOrEmpty(category))
             {
-                return new ResultData<PostDetailsModel>(Constants.InvalidCategoryMessage, false, null);
+                return new ResultData<PostIdModel>(Constants.InvalidCategoryMessage, false, null);
             }
 
             var existingPost = await this.db.Posts.FirstOrDefaultAsync(p => p.Title == title);
 
             if (existingPost != null)
             {
-                return new ResultData<PostDetailsModel>(Constants.PostExistsMessage, false, null);
+                return new ResultData<PostIdModel>(Constants.PostExistsMessage, false, null);
             }
 
             Category postCategory;
@@ -126,7 +153,7 @@ namespace BlogServer.Services
 
             if (!tryParseCategory)
             {
-                return new ResultData<PostDetailsModel>(Constants.InvalidCategoryMessage, false, null);
+                return new ResultData<PostIdModel>(Constants.InvalidCategoryMessage, false, null);
             }
 
             var post = new Post
@@ -134,27 +161,15 @@ namespace BlogServer.Services
                 AuthorId = authorId,
                 Category = postCategory,
                 Content = content,
-                Title = title,
-                Author = await this.db.Users.FirstOrDefaultAsync(u => u.Id == authorId)
+                Title = title
             };
 
             await this.db.Posts.AddAsync(post);
             await this.db.SaveChangesAsync();
 
-            return new ResultData<PostDetailsModel>(Constants.PostCreatedMessage, true, new PostDetailsModel
+            return new ResultData<PostIdModel>(Constants.PostCreatedMessage, true, new PostIdModel
             {
-                Id = post.Id,
-                AuthorName = post.Author.Email,
-                Category = post.Category.ToString(),
-                Content = post.Content,
-                Title = post.Title,
-                CreatedOn = post.CreatedOn.ToString("dd.MM.yyyy", CultureInfo.InvariantCulture),
-                Comments = post.Comments.Select(c => new CommentModel
-                {
-                    CreatedOn = c.CreatetOn.ToString("dd.MM.yyyy", CultureInfo.InvariantCulture),
-                    AuthorName = c.Author.Email,
-                    Content = c.Content
-                })
+                Id = post.Id
             });
         }
 

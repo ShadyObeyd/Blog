@@ -1,12 +1,11 @@
-﻿using System.Runtime.CompilerServices;
-
-namespace BlogServer.Utilities
+﻿namespace BlogServer.Utilities
 {
     public class Constants
     {
         public const string CorsPolicy = "CorsPolicy";
         public const string AppSecret = "super secret key";
         public const string EmailPattern = @"^[A-Za-z0-9.]+@[A-Za-z]+\.[a-z]{2,3}$";
+        public const string DateFormat = "dd.MM.yyyy";
 
         public const string GenericErrorMessage = "An error occured!";
 
@@ -32,5 +31,7 @@ namespace BlogServer.Utilities
         public const string CategoryMissingMessage = "No posts with this category!";
         public const string PostsExistMessage = "Posts exist.";
         public const string UserHasNoPostsMessage = "You currently don't have any posts!";
+        public const string PostNotFoundMessage = "Post not found!";
+        public const string PostFoundMessage = "Post exists.";
     }
 }
