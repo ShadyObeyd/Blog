@@ -23,7 +23,15 @@ function CreatePost(props) {
     const userContext = useContext(UserContext);
 
     useEffect(() => {
-        getCategories();
+        let subscribed = true;
+
+        if (subscribed) {
+            getCategories();
+        }
+
+        return () => {
+            subscribed = false;
+        }
     }, []);
 
     async function getCategories() {

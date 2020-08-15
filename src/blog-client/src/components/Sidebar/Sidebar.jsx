@@ -15,7 +15,15 @@ function Sidebar() {
     const postContext = useContext(PostContext);
 
     useEffect(() => {
-        getCategories();
+        let subscribed = true;
+
+        if (subscribed) {
+            getCategories();
+        }
+
+        return () => {
+            subscribed = false;
+        }
     }, []);
 
     async function getCategories() {

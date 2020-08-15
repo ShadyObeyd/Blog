@@ -10,13 +10,21 @@ import { useEffect } from 'react';
 import { getTokenDetails } from './services/users-service';
 import Spinner from './components/Spinner/Spinner';
 import Post from './components/Post/Post';
+import Comments from './components/Comments/Comments';
 
 function App() {
   const [user, setUser] = useState(null);
   const [loggedIn, setLoggedIn] = useState(null);
 
   useEffect(() => {
-    getTokenDetails(login, logout);
+    let subscribed = true;
+    if (subscribed) {
+      getTokenDetails(login, logout);
+    }
+
+    return () => {
+      subscribed = false;
+    }
   }, []);
 
   const login = (user) => {
@@ -41,6 +49,7 @@ function App() {
       {loggedIn ? <Redirect to="/" /> : <Route exact path="/register" component={Register} />}
       {loggedIn ? <Route exact path="/create-post" component={CreatePost} /> : <Redirect to='/' />}
       <Route exact path="/post/:id" component={Post} />
+      <Route exact path="/comments/:id" component={Comments} />
       <Footer />
     </UserContext.Provider>
   );

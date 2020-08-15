@@ -20,7 +20,15 @@ function Home(props) {
 
 
     useEffect(() => {
-        allPosts();
+        let subscribed = true;
+
+        if (subscribed) {
+            allPosts();
+        }
+
+        return () => {
+            subscribed = false;
+        }
     }, []);
 
     async function allPosts() {
@@ -42,14 +50,14 @@ function Home(props) {
     }
 
     return (
-        <PostContext.Provider value={{posts, getPosts: setPosts}}>
+        <PostContext.Provider value={{ posts, getPosts: setPosts }}>
             {userContext.loggedIn ?
                 <h1 className={styles['text-center']}>Welcome, {userContext.user.email}!</h1> :
                 <h1 className={styles['text-center']}>Welcome, blogger!</h1>}
             <hr />
             <Sidebar />
             {userContext.loggedIn ? <Navbar /> : <Login />}
-            <Posts posts={currentPosts} push={props.history.push}/>
+            <Posts posts={currentPosts} push={props.history.push} />
             <Pagination postsPerPage={postsPerPage} totalPosts={posts.length} clicked={paginate} />
         </PostContext.Provider>
     );

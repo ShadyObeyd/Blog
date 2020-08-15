@@ -13,7 +13,14 @@ function Post(props) {
     const [currentPage, setCurrentPage] = useState(1);
 
     useEffect(() => {
-        getPost(postId);
+        let subscribed = true;
+        if (subscribed) {
+            getPost(postId);
+        }
+
+        return () => {
+            subscribed = false;
+        }
     }, [postId]);
 
     async function getPost(postId) {
