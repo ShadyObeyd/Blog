@@ -13,7 +13,7 @@ import UserContext from '../../context';
 import Error from '../Error/Error';
 import Spinner from '../Spinner/Spinner';
 
-function CreatePost() {
+function CreatePost(props) {
     const [title, setTitle] = useState('');
     const [content, setContent] = useState('');
     const [category, setCategory] = useState('');
@@ -50,7 +50,7 @@ function CreatePost() {
     async function handleSubmit(e) {
         e.preventDefault();
         var userId = userContext.user.id;
-        await createPost(title, content, category, userId, setFormIsValid, setErrorMessage);
+        await createPost(title, content, category, userId, setFormIsValid, setErrorMessage, props);
     }
 
     if (!formIsValid) {

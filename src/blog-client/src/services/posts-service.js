@@ -10,7 +10,7 @@ export async function fetchCategories() {
     return res;
 }
 
-export async function createPost(title, content, category, authorId, setFormIsValid, setErrorMessage) {
+export async function createPost(title, content, category, authorId, setFormIsValid, setErrorMessage, props) {
     if (title === '' || title === null) {
         setErrorMessage(invalidTitleMessage);
         setFormIsValid(false);
@@ -57,8 +57,7 @@ export async function createPost(title, content, category, authorId, setFormIsVa
         return;
     }
 
-    console.log(res);
-    // TODO Redirect to details page
+    props.history.push(`/post/${res.id}`);
 }
 
 export async function getPosts() {

@@ -9,6 +9,7 @@ import { useState } from 'react';
 import { useEffect } from 'react';
 import { getTokenDetails } from './services/users-service';
 import Spinner from './components/Spinner/Spinner';
+import Post from './components/Post/Post';
 
 function App() {
   const [user, setUser] = useState(null);
@@ -39,6 +40,7 @@ function App() {
       <Route exact path="/" component={Home} />
       {loggedIn ? <Redirect to="/" /> : <Route exact path="/register" component={Register} />}
       {loggedIn ? <Route exact path="/create-post" component={CreatePost} /> : <Redirect to='/' />}
+      <Route exact path="/post/:id" component={Post} />
       <Footer />
     </UserContext.Provider>
   );

@@ -1,14 +1,12 @@
 import React, { Fragment } from 'react';
 
-function Post({ id, title, content, category, createdOn, author, comments }) {
+function Post(props) {
+    const id = props.match.params.id;
+    console.log(id);
+    
     return (
         <Fragment>
-            <h1>{title}</h1>
-            <p>{content}</p>
-            <footer>
-                <p>{author}</p>
-                <p>{createdOn}</p>
-            </footer>
+            <h1>Hello from Post</h1>
         </Fragment>
     )
 }
