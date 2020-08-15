@@ -42,11 +42,11 @@ namespace BlogServer.Services
             return new ResultData<IEnumerable<PostHomeModel>>(Constants.PostsExistMessage, true, posts);
         }
 
-        public async Task<ResultData<IEnumerable<PostHomeModel>>> GetPostsByDateAndCategory(string category)
+        public async Task<ResultData<IEnumerable<PostHomeModel>>> GetPostsByDateAndCategory(string category = null)
         {
             if (category == "All")
             {
-                return await this.GetAllPostsByDate();
+                category = null;
             }
 
             bool postsExist = await this.db.Posts.AnyAsync();
@@ -64,7 +64,7 @@ namespace BlogServer.Services
                 return new ResultData<IEnumerable<PostHomeModel>>(Constants.InvalidCategoryMessage, false, null);
             }
 
-            var posts = await this.db.Posts.Where(p => p.Category == postCategory)
+            var posts = await this.db.Posts.Where(p => category == null ? true : p.Category == postCategory)
                                            .OrderByDescending(p => p.CreatedOn)
                                            .Select(p => new PostHomeModel
                                             {
@@ -73,26 +73,6 @@ namespace BlogServer.Services
                                                 Content = p.Content
 
                                             }).ToArrayAsync();
-
-            return new ResultData<IEnumerable<PostHomeModel>>(Constants.PostExistsMessage, true, posts);
-        }
-
-        public async Task<ResultData<IEnumerable<PostHomeModel>>> GetAllPostsByDate()
-        {
-            bool postsExist = await this.db.Posts.AnyAsync();
-
-            if (!postsExist)
-            {
-                return new ResultData<IEnumerable<PostHomeModel>>(Constants.NoPostsMessage, false, null);
-            }
-
-            var posts = await this.db.Posts.OrderByDescending(p => p.CreatedOn).Select(p => new PostHomeModel
-            {
-                Id = p.Id,
-                Title = p.Title,
-                Content = p.Content
-                
-            }).ToArrayAsync();
 
             return new ResultData<IEnumerable<PostHomeModel>>(Constants.PostExistsMessage, true, posts);
         }
