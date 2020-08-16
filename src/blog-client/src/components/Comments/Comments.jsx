@@ -9,6 +9,7 @@ import UserContext from '../../context';
 import AddComment from '../AddComment/AddComment';
 import Comment from '../Comment/Comment';
 import Pagination from '../Pagination/Pagination';
+import { Link } from 'react-router-dom';
 
 function Comments(props) {
     const postId = Number(props.match.params.id);
@@ -48,6 +49,9 @@ function Comments(props) {
 
     return (
         <div className={styles.comments}>
+            <div className={styles.container}>
+                <Link to='/' className={styles.link}>Back to Home</Link>
+            </div>
             {isLoggedIn ? <AddComment userId={userId} postId={postId} /> : null}
             {comments.length === 0 ? <h2>No comments yet!</h2> :
                 <ul>

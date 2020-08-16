@@ -50,8 +50,11 @@ function Post(props) {
     return (
         <div className={styles.post}>
             <h1>{post.title}</h1>
+            <div className={styles['home-container']}>
+            <Link to='/'className={styles.link}>Back to Home</Link>
+            </div>
             <div className={styles.quotes}>
-                <blockquote>{post.category}</blockquote>
+                <blockquote><b>Category:</b> {post.category}</blockquote>
             </div>
             <hr />
             <p className={styles.content}>{currentContent}</p>

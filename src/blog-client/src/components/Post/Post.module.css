@@ -27,3 +27,7 @@
 .link:hover{
     color: wheat;
 }
+
+.home-container {
+    margin-left: 20%;
+}

@@ -7,3 +7,17 @@
     margin-left: 30%;
     list-style-type: none;
 }
+
+.container {
+    margin-left: 20%;
+}
+
+.link {
+    text-decoration: none;
+    color: white;
+    margin-right: 30px;
+}
+
+.link:hover{
+    color: wheat;
+}
