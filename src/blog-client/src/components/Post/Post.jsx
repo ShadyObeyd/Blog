@@ -38,7 +38,7 @@ function Post(props) {
         return <Spinner />
     }
 
-    const charsPerPage = 1337;
+    const charsPerPage = 1200;
     const indexOfLastChar = currentPage * charsPerPage;
     const indexOfFirstChar = indexOfLastChar - charsPerPage;
     const currentContent = post.content.slice(indexOfFirstChar, indexOfLastChar);
