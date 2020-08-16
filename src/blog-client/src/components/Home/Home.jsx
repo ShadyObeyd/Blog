@@ -40,10 +40,17 @@ function Home(props) {
         return <Spinner />
     }
 
-    const postsPerPage = 6
-    const indexOfLastPost = currentPage * postsPerPage;
-    const indexofFirstPost = indexOfLastPost - postsPerPage;
-    const currentPosts = posts.slice(indexofFirstPost, indexOfLastPost);
+    let postsPerPage = 0;
+    let indexOfLastPost = 0;
+    let indexofFirstPost = 0;
+    let currentPosts = [];
+
+    if (posts !== undefined) {
+        postsPerPage = 6
+        indexOfLastPost = currentPage * postsPerPage;
+        indexofFirstPost = indexOfLastPost - postsPerPage;
+        currentPosts = posts.slice(indexofFirstPost, indexOfLastPost);
+    }
 
     function paginate(pageNumber) {
         setCurrentPage(pageNumber);
@@ -58,7 +65,7 @@ function Home(props) {
             <Sidebar />
             {userContext.loggedIn ? <Navbar /> : <Login />}
             <Posts posts={currentPosts} push={props.history.push} />
-            <Pagination postsPerPage={postsPerPage} totalPosts={posts.length} clicked={paginate} />
+            <Pagination postsPerPage={postsPerPage} totalPosts={posts === undefined ? 0 : posts.length} clicked={paginate} />
         </PostContext.Provider>
     );
 }
