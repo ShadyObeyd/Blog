@@ -61,13 +61,12 @@ export async function createComment(userId, postId, content, setErrorMessage, se
 
     try {
         let res = await promise.json();
-
-    if (res) {
-        if (res.message) {
-            setErrorMessage(res.message);
-            setFormIsValid(false);
+        if (res) {
+            if (res.message) {
+                setErrorMessage(res.message);
+                setFormIsValid(false);
+            }
         }
-    }
     } catch (e) {
         
     }
