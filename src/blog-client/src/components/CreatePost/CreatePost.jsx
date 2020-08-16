@@ -75,15 +75,15 @@ function CreatePost(props) {
             <form>
                 <Label forr="title" text="Title" />
                 <br />
-                <Input id="title" type="text" changed={handleTitleChange} placeholder="title..." value='' />
+                <Input id="title" type="text" changed={handleTitleChange} placeholder="title..." value={title} />
                 <br />
                 <Label forr="title" text="Content" />
                 <br />
-                <TextArea changed={handleContentChange} value='' />
+                <TextArea changed={handleContentChange} value={content} />
                 <br />
                 <Label forr="category" text="Category" />
                 <br />
-                <Select options={categories} changed={handleCategoryChange} value='' />
+                <Select options={categories} changed={handleCategoryChange} value={category} />
                 <br />
                 <Button text="Create" clicked={handleSubmit} />
             </form>
