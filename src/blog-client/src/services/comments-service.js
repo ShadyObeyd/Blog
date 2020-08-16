@@ -69,6 +69,6 @@ export async function createComment(userId, postId, content, setErrorMessage, se
         }
     }
     } catch (e) {
-        console.log(e);
+        
     }
 }
