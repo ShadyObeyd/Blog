@@ -11,6 +11,7 @@ import { getTokenDetails } from './services/users-service';
 import Spinner from './components/Spinner/Spinner';
 import Post from './components/Post/Post';
 import Comments from './components/Comments/Comments';
+import EditPost from './components/EditPost/EditPost';
 
 function App() {
   const [user, setUser] = useState(null);
@@ -50,6 +51,7 @@ function App() {
       {loggedIn ? <Route exact path="/create-post" component={CreatePost} /> : <Redirect to='/' />}
       <Route exact path="/post/:id" component={Post} />
       <Route exact path="/comments/:id" component={Comments} />
+      {loggedIn ? <Route exact path="/edit/:id" component={EditPost} /> : <Redirect to='/'/>}
       <Footer />
     </UserContext.Provider>
   );

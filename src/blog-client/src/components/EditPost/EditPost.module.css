@@ -1,0 +1,8 @@
+.post {
+    display: block;
+    text-align: center;
+}
+
+.post ::placeholder{
+    color: white;
+}

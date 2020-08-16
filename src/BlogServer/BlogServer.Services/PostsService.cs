@@ -22,6 +22,65 @@ namespace BlogServer.Services
             this.db = db;
         }
 
+        public async Task<ResultData<PostIdModel>> EditPost(int postId, string title, string content, string category)
+        {
+            if (postId == 0)
+            {
+                return new ResultData<PostIdModel>(Constants.PostNotFoundMessage, false, null);
+            }
+
+            if (string.IsNullOrEmpty(title))
+            {
+                return new ResultData<PostIdModel>(Constants.InvalidTitleMessage, false, null);
+            }
+
+            if (string.IsNullOrEmpty(content))
+            {
+                return new ResultData<PostIdModel>(Constants.InvalidContentMessage, false, null);
+            }
+
+            if (string.IsNullOrEmpty(category))
+            {
+                return new ResultData<PostIdModel>(Constants.InvalidCategoryMessage, false, null);
+            }
+
+            var post = await this.db.Posts.Include(p => p.Author).Include(p => p.Comments).FirstOrDefaultAsync(p => p.Id == postId);
+
+            if (post == null)
+            {
+                return new ResultData<PostIdModel>(Constants.PostNotFoundMessage, false, null);
+            }
+
+            var posts = await this.db.Posts.Where(p => p.Id != postId).ToArrayAsync();
+
+            if (posts.Any(p => p.Title == title))
+            {
+                return new ResultData<PostIdModel>(Constants.PostExistsMessage, false, null);
+            }
+
+            Category postCategory;
+            var tryParseCategory = Enum.TryParse(category, true, out postCategory);
+
+            if (!tryParseCategory)
+            {
+                return new ResultData<PostIdModel>(Constants.InvalidCategoryMessage, false, null);
+            }
+
+            post.Title = title;
+            post.Content = content;
+            post.Category = postCategory;
+
+            this.db.Posts.Update(post);
+            await this.db.SaveChangesAsync();
+
+            var model = new PostIdModel
+            {
+                Id = post.Id
+            };
+
+            return new ResultData<PostIdModel>(string.Empty, true, model);
+        }
+
         public async Task<ResultData<PostDetailsModel>> GetPostById(int postId)
         {
             if (postId == 0)
@@ -44,7 +103,8 @@ namespace BlogServer.Services
                 Content = post.Content,
                 Title = post.Title,
                 CreatedOn = post.CreatedOn.ToString(Constants.DateFormat, CultureInfo.InvariantCulture),
-                CommentsCount = post.Comments.Count()
+                CommentsCount = post.Comments.Count(),
+                AuthorId = post.AuthorId
             };
 
             return new ResultData<PostDetailsModel>(Constants.PostExistsMessage, true, model);

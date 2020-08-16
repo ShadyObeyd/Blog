@@ -1,48 +1,56 @@
 import React from 'react';
-import { useState } from 'react';
 import Label from '../Form/Label/Label';
 import Input from '../Form/Input/Input';
 import TextArea from '../Form/TextArea/TextArea';
-import styles from './CreatePost.module.css';
 import Select from '../Form/Select/Select';
-import { useEffect } from 'react';
-import { fetchCategories, createPost } from '../../services/posts-service';
 import Button from '../Button/Button';
-import { useContext } from 'react';
-import UserContext from '../../context';
+import styles from './EditPost.module.css';
 import Error from '../Error/Error';
+import { useState } from 'react';
+import { useEffect } from 'react';
+import { fetchCategories, getPostById, editPost } from '../../services/posts-service';
 import Spinner from '../Spinner/Spinner';
 
-function CreatePost(props) {
+function EditPost(props) {
+    const postId = Number(props.match.params.id);
+    const [formIsValid, setFormIsValid] = useState(true);
+    const [errorMessage, setErrorMessage] = useState('');
+    const [categories, setCategories] = useState(null);
     const [title, setTitle] = useState('');
     const [content, setContent] = useState('');
     const [category, setCategory] = useState('');
-    const [categories, setCategories] = useState(null);
-    const [errorMessage, setErrorMessage] = useState('');
-    const [formIsValid, setFormIsValid] = useState(true);
-    const userContext = useContext(UserContext);
+    const [post, setPost] = useState(null);
 
     useEffect(() => {
         let subscribed = true;
 
         if (subscribed) {
+            getPost(postId);
             getCategories();
         }
 
         return () => {
             subscribed = false;
         }
-    }, []);
+    }, [postId]);
 
     async function getCategories() {
         let categories = await fetchCategories();
         setCategories(categories);
     }
 
-    if (categories === null) {
-        return <Spinner />
+    async function getPost(postId) {
+        let post = await getPostById(postId);
+        setPost(post);
+        setTitle(post.title);
+        setContent(post.content);
+        setCategory(post.category);
     }
 
+    if (categories === null || post === null) {
+        return <Spinner />
+    }
+    
     function handleTitleChange(e) {
         setTitle(e.target.value);
     }
@@ -57,8 +65,7 @@ function CreatePost(props) {
 
     async function handleSubmit(e) {
         e.preventDefault();
-        var userId = userContext.user.id;
-        await createPost(title, content, category, userId, setFormIsValid, setErrorMessage, props);
+        await editPost(postId, title, content, category, setErrorMessage, setFormIsValid, props);
     }
 
     if (!formIsValid) {
@@ -75,20 +82,20 @@ function CreatePost(props) {
             <form>
                 <Label forr="title" text="Title" />
                 <br />
-                <Input id="title" type="text" changed={handleTitleChange} placeholder="title..." value='' />
+                <Input id="title" type="text" changed={handleTitleChange} placeholder="title..." value={title} />
                 <br />
                 <Label forr="title" text="Content" />
                 <br />
-                <TextArea changed={handleContentChange} value='' />
+                <TextArea changed={handleContentChange} value={content} />
                 <br />
                 <Label forr="category" text="Category" />
                 <br />
-                <Select options={categories} changed={handleCategoryChange} value='' />
+                <Select options={categories} changed={handleCategoryChange} value={category} />
                 <br />
-                <Button text="Create" clicked={handleSubmit} />
+                <Button text="Edit" clicked={handleSubmit} />
             </form>
         </div>
     );
 }
 
-export default CreatePost;
+export default EditPost;

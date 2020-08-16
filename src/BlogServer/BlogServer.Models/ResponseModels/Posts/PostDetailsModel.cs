@@ -15,5 +15,7 @@
         public string AuthorName { get; set; }
 
         public int CommentsCount { get; set; }
+
+        public string AuthorId { get; set; }
     }
 }

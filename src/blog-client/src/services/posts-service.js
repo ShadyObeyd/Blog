@@ -1,4 +1,4 @@
-import { baseUrl, invalidTitleMessage, contentMinLength, invalidContentMessage, invalidCategoryMessage } from "../constants";
+import { baseUrl, invalidTitleMessage, contentMinLength, invalidContentMessage, invalidCategoryMessage, postNotFoundMessage } from "../constants";
 import { getCookie } from './users-service';
 
 const postsUrl = baseUrl + '/posts';
@@ -83,7 +83,7 @@ export async function getPostsByCategory(category) {
     });
 
     let res = await promise.json();
-    
+
     return res;
 }
 
@@ -119,4 +119,55 @@ export async function getPostById(postId) {
 
     let res = await promise.json();
     return res;
+}
+
+export async function editPost(postId, title, content, category, setErrorMessage, setFormIsValid, props) {
+    if (postId === 0) {
+        setErrorMessage(postNotFoundMessage);
+        setFormIsValid(false);
+    }
+
+    if (title === '' || title === null) {
+        setErrorMessage(invalidTitleMessage);
+        setFormIsValid(false);
+        return;
+    }
+
+    if (content.length < contentMinLength) {
+        setErrorMessage(invalidContentMessage);
+        setFormIsValid(false);
+        return;
+    }
+
+    if (category === '' || category === null) {
+        setErrorMessage(invalidCategoryMessage);
+        setFormIsValid(false);
+        return;
+    }
+
+    let token = getCookie('x-auth-token');
+
+    let promise = await fetch(postsUrl + '/edit', {
+        method: 'POST',
+        body: JSON.stringify({
+            postId,
+            title,
+            content,
+            category
+        }),
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        }
+    });
+
+    let res = await promise.json();
+
+    if (res.message) {
+        setErrorMessage(res.message);
+        setFormIsValid(false);
+        return;
+    }
+
+    props.history.push(`/post/${res.id}`);
 }

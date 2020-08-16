@@ -18,11 +18,12 @@
     text-align: center;
 }
 
-.comments {
+.link {
     text-decoration: none;
     color: white;
+    margin-right: 30px;
 }
 
-.comments:hover{
+.link:hover{
     color: wheat;
 }

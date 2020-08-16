@@ -1,8 +1,8 @@
 import React from 'react';
 import styles from './TextArea.module.css';
 
-function TextArea({ changed }) {
-    return <textarea className={styles.text} onChange={changed}/>
+function TextArea({ changed, value }) {
+    return <textarea className={styles.text} onChange={changed} value={value}/>
 }
 
 export default TextArea;

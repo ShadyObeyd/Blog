@@ -6,11 +6,17 @@ import Spinner from '../Spinner/Spinner';
 import styles from './Post.module.css';
 import Pagination from '../Pagination/Pagination';
 import { Link } from 'react-router-dom';
+import { useContext } from 'react';
+import UserContext from '../../context';
 
 function Post(props) {
     const postId = Number(props.match.params.id);
     const [post, setPost] = useState(null);
     const [currentPage, setCurrentPage] = useState(1);
+    const userContext = useContext(UserContext);
+
+    const isLoggedIn = userContext.loggedIn;
+    const userId = isLoggedIn ? userContext.user.id : null;
 
     useEffect(() => {
         let subscribed = true;
@@ -56,7 +62,8 @@ function Post(props) {
             </div>
             <hr />
             <div className={styles.container}>
-                <Link to={{ pathname: `/comments/${postId}` }} className={styles.comments}>View Comments ({post.commentsCount})</Link>
+                {userId === post.authorId ? <Link to={{ pathname: `/edit/${postId}` }} className={styles.link}>Edit</Link> : null}
+                <Link to={{ pathname: `/comments/${postId}` }} className={styles.link}>View Comments ({post.commentsCount})</Link>
             </div>
         </div>
     )

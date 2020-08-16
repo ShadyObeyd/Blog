@@ -1,6 +1,7 @@
 ﻿using System.Threading.Tasks;
 using BlogServer.Models.RequestModels.Posts;
 using BlogServer.Models.RequestModels.Users;
+using BlogServer.Models.ResponseModels.Posts;
 using BlogServer.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -16,6 +17,20 @@ namespace BlogServer.App.Controllers
         public PostsController(PostsService postsService)
         {
             this.postsService = postsService;
+        }
+
+        [Authorize]
+        [HttpPost("edit")]
+        public async Task<IActionResult> EditPost([FromBody] PostEditModel model)
+        {
+            var result = await this.postsService.EditPost(model.PostId, model.Title, model.Content, model.Category);
+
+            if (!result.Success)
+            {
+                return Ok(new { message = result.Message });
+            }
+
+            return Ok(result.Data);
         }
 
         [HttpPost("post")]

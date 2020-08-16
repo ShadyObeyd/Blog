@@ -18,3 +18,4 @@ export const noUserMessage = 'Cannot add comment if you are not logged in!';
 export const noPostMessage = "Comment must be added to existing post!";
 export const commentTooLargeMessage = 'Comment must not be more than 245 characters long!';
 export const commentMaxChars = 245;
+export const postNotFoundMessage = 'Post not found!';
